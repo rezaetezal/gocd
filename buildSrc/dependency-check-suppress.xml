@@ -145,4 +145,47 @@
         <cve>CVE-2020-25638</cve>
     </suppress>
 
+<<<<<<< HEAD
+=======
+    <suppress>
+        <notes><![CDATA[
+   From review of https://nvd.nist.gov/vuln/detail/CVE-2021-23463 GoCD is not subject to this XXE vulnerability, because
+   neither GoCD, Hibernate or MyBatis use JdbcResultSet.getSQLXML(). It seems this is unlikely to get a backport to
+   H2 1.4.x which is a breaking change. See https://github.com/h2database/h2database/issues/3195 and
+   https://github.com/h2database/h2database/issues/3271
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.h2database/h2@.*$</packageUrl>
+        <cve>CVE-2021-23463</cve>
+    </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+   The CVEs as documented at https://github.com/h2database/h2database/security/advisories/GHSA-h376-j262-vhq6 and
+   https://github.com/advisories/GHSA-45hx-wfhj-473x only affect the H2 console (not enabled on GoCD),
+   context-dependent use of JdbcUtils.getConnection (not possible from remote properties in GoCD)
+   so GoCD does not appear to be vulnerable to these problems even when running with H2 DB.
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.h2database/h2@.*$</packageUrl>
+        <cve>CVE-2021-42392</cve>
+        <cve>CVE-2022-23221</cve>
+    </suppress>
+
+    <suppress until="2022-05-01Z">
+        <notes><![CDATA[
+   Time-limited suppression for https://nvd.nist.gov/vuln/detail/CVE-2021-29425. GoCD is not vulnerable as the use of
+   FilenameUtils.normalize does not "use the result to construct a path value" as required by the defect. Neither does
+   any of GoCD's libraries use this functionality.
+
+   This was fixed in Commons IO 2.7 and GoCD originally upgraded to 2.11.0, however unfortunately all later versions
+   have some regressions as noted in https://github.com/gocd/gocd/issues/9397 https://github.com/gocd/gocd/pull/9517
+   and https://github.com/gocd/gocd/issues/9927
+
+   While the last issue appears to be fixed by Commons IO 2.12 (not yet released) there are other regressions in 2.12
+   master due to ongoing work and it feels the path to stability might take some time.
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/commons\-io/commons\-io@.*$</packageUrl>
+        <cve>CVE-2021-29425</cve>
+    </suppress>
+
+>>>>>>> bbd944cb65 (Downgrade commons-io to 2.6)
 </suppressions>
